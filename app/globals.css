@@ -23,7 +23,7 @@ h2 {
   font-size: 18px;
 }
 
-#count {
+.count {
   color: #888;
   font-weight: normal;
 }
@@ -36,14 +36,14 @@ h2 {
 }
 
 /* 입력 폼 */
-#message-form {
+.message-form {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-#message-form input,
-#message-form textarea {
+.message-form input,
+.message-form textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -51,12 +51,12 @@ h2 {
   font-family: inherit;
 }
 
-#message-form textarea {
+.message-form textarea {
   min-height: 80px;
   resize: vertical;
 }
 
-#message-form button {
+.message-form button {
   padding: 10px;
   border: none;
   border-radius: 6px;
@@ -66,12 +66,12 @@ h2 {
   cursor: pointer;
 }
 
-#message-form button:hover {
+.message-form button:hover {
   background: #3753d6;
 }
 
 /* 목록 */
-#message-list {
+.message-list {
   list-style: none;
   padding: 0;
   display: flex;
