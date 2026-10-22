@@ -1,0 +1,106 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Malgun Gothic", sans-serif;
+  background: #f4f5f7;
+  color: #222;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+#count {
+  color: #888;
+  font-weight: normal;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 폼 */
+#message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#message-form input,
+#message-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+#message-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+#message-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #4a6cf7;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#message-form button:hover {
+  background: #3753d6;
+}
+
+/* 목록 */
+#message-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message-item .meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.message-item .name {
+  font-weight: bold;
+}
+
+.message-item .date {
+  color: #888;
+  font-size: 12px;
+}
+
+.message-item .content {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+}

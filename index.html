@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>방명록</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>방명록</h1>
+
+    <!-- 입력 영역 -->
+    <form id="message-form" class="card">
+      <input id="name-input" type="text" placeholder="이름" maxlength="20" required>
+      <textarea id="message-input" placeholder="메시지를 남겨주세요" maxlength="200" required></textarea>
+      <button type="submit">저장</button>
+    </form>
+
+    <!-- 목록 영역 -->
+    <section>
+      <h2>메시지 목록 <span id="count">0</span></h2>
+      <ul id="message-list"></ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
