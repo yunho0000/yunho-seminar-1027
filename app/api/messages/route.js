@@ -1,14 +1,23 @@
-import { connection } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
-// [2단계] 데이터는 서버 메모리(이 변수)에 저장됩니다.
-// → 새로고침해도, 다른 브라우저에서도 같은 목록이 보입니다.
-// → 하지만 서버를 껐다 켜면(npm run dev 재시작) 모두 사라집니다. (3단계에서 DB로 옮길 예정)
-const messages = [];
+// [3단계] 데이터는 데이터베이스(Supabase)의 messages 테이블에 저장됩니다.
+// → 서버를 껐다 켜도(npm run dev 재시작) 메시지가 그대로 남아 있습니다.
+// 접속 정보는 .env.local 파일에서 읽어옵니다. (비밀 키라서 GitHub에 올리지 않아요)
+function getSupabase() {
+  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY);
+}
 
 // 목록 가져오기: GET /api/messages
 export async function GET() {
-  await connection(); // 미리 만들어두지 말고, 요청이 올 때마다 최신 목록을 보내기
-  return Response.json(messages);
+  const { data, error } = await getSupabase()
+    .from("messages")
+    .select("id, name, content, createdAt:created_at") // DB의 created_at을 화면에서 쓰던 createdAt 이름으로
+    .order("created_at", { ascending: false }); // 최신 글이 위로
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+  return Response.json(data);
 }
 
 // 메시지 저장하기: POST /api/messages
@@ -24,13 +33,14 @@ export async function POST(request) {
     );
   }
 
-  const newMessage = {
-    id: Date.now(),
-    name: name.slice(0, 20),
-    content: content.slice(0, 200),
-    createdAt: new Date().toISOString(),
-  };
+  const { data, error } = await getSupabase()
+    .from("messages")
+    .insert({ name: name.slice(0, 20), content: content.slice(0, 200) })
+    .select("id, name, content, createdAt:created_at")
+    .single();
 
-  messages.unshift(newMessage); // 최신 글이 위로
-  return Response.json(newMessage, { status: 201 });
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+  return Response.json(data, { status: 201 });
 }

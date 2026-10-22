@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 1. 화면만 만들기 | `step1-ui` | 브라우저 메모리 (React state) | 새로고침하면 사라짐 |
 | 2. 서버 연결하기 | `step2-server` | 서버 메모리 (API Route) | 서버를 재시작하면 사라짐 |
-| 3. DB 연결하기 | `step3-db` | 데이터베이스 (SQLite) | — |
+| 3. DB 연결하기 | `step3-db` | 데이터베이스 (Supabase) | — |
 
 ## 실행 방법
 
@@ -46,3 +46,23 @@ npm run dev
 3. **새로고침해도 메시지가 남아 있다.** 다른 브라우저에서도 같은 목록이 보인다.
 4. 하지만 **서버를 껐다 켜면(`npm run dev` 재시작) 모두 사라진다.** → 데이터가 서버 메모리에만 있기 때문
 5. 그래서 다음 단계: 데이터를 **데이터베이스**에 보관하자!
+
+## 3단계: DB 연결하기
+
+### 준비 (처음 한 번만)
+1. [Supabase](https://supabase.com)에서 새 프로젝트를 만든다.
+2. 대시보드 → **SQL Editor**에 `supabase/schema.sql` 내용을 붙여넣고 **Run** → `messages` 테이블이 생긴다.
+3. `.env.example`을 복사해 `.env.local`을 만들고, 대시보드 → **Project Settings**에서 프로젝트 URL과 **Secret key**를 채운다.
+4. `npm install` 후 `npm run dev`
+
+### 파일 구성
+- `app/api/messages/route.js` — 서버. 이제 메모리 대신 Supabase의 `messages` 테이블에 읽고 쓴다
+- `supabase/schema.sql` — 테이블 만드는 SQL
+- `.env.local` — DB 접속 정보 (비밀! GitHub에 올라가지 않음)
+- `app/page.js` — **바뀐 게 없다.** 화면은 서버하고만 대화하기 때문
+
+### 발표 포인트
+1. **서버를 껐다 켜도 메시지가 남아 있다.** → 데이터가 DB에 있기 때문
+2. Supabase 대시보드 → **Table Editor**에서 저장된 메시지를 직접 볼 수 있다.
+3. 화면 코드(`page.js`)는 그대로, 서버(`route.js`)만 바꿨다. → 역할을 나눠 두면 저장 방식을 바꾸기 쉽다
+4. 비밀 키는 서버에만 둔다. 브라우저는 DB에 직접 접근하지 못한다. (RLS로 잠금)
