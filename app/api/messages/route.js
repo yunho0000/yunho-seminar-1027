@@ -2,9 +2,10 @@ import { createClient } from "@supabase/supabase-js";
 
 // [3단계] 데이터는 데이터베이스(Supabase)의 messages 테이블에 저장됩니다.
 // → 서버를 껐다 켜도(npm run dev 재시작) 메시지가 그대로 남아 있습니다.
-// 접속 정보는 .env.local 파일에서 읽어옵니다. (비밀 키라서 GitHub에 올리지 않아요)
+// 접속 정보는 .env.local 파일에서 읽어옵니다.
+// 공개키(publishable key)는 읽기·새 글 쓰기만 할 수 있어요. (supabase/schema.sql의 규칙)
 function getSupabase() {
-  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY);
+  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY);
 }
 
 // 목록 가져오기: GET /api/messages

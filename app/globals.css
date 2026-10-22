@@ -9,6 +9,15 @@ body {
   color: #222;
 }
 
+/* [3단계] 맨 위 표시 띠 */
+.step-badge {
+  background: #2fa37a;
+  color: #fff;
+  text-align: center;
+  padding: 8px 16px;
+  font-weight: bold;
+}
+
 .container {
   max-width: 600px;
   margin: 40px auto;
