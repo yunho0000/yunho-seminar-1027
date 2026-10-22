@@ -104,3 +104,9 @@ h2 {
   text-align: center;
   color: #888;
 }
+
+.error {
+  margin: 0;
+  color: #d33;
+  font-size: 14px;
+}

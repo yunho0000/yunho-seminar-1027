@@ -1,29 +1,48 @@
 "use client"; // useState, 버튼 클릭 같은 브라우저 동작을 쓰려면 필요
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  // [1단계] 데이터는 브라우저 메모리(state)에만 저장됩니다.
-  // → 새로고침하면 모두 사라집니다. (2단계에서 서버로 옮길 예정)
+  // [2단계] 데이터는 서버(/api/messages)에 저장됩니다.
+  // → state는 서버에서 받아온 목록을 화면에 보여주는 용도로만 씁니다.
   const [messages, setMessages] = useState([]);
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState("");
+
+  // 서버에서 목록 가져오기 (GET)
+  async function loadMessages() {
+    const res = await fetch("/api/messages");
+    setMessages(await res.json());
+  }
+
+  // 화면이 처음 열릴 때 한 번 목록 가져오기
+  useEffect(() => {
+    loadMessages();
+  }, []);
 
   // 저장 버튼을 누르면 실행
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault(); // 폼 기본 동작(페이지 새로고침) 막기
 
     if (!name.trim() || !content.trim()) return;
 
-    const newMessage = {
-      id: Date.now(),
-      name: name.trim(),
-      content: content.trim(),
-      createdAt: new Date().toISOString(),
-    };
+    // 서버에 새 메시지 보내기 (POST)
+    const res = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, content }),
+    });
 
-    setMessages([newMessage, ...messages]); // 최신 글이 위로
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error);
+      return;
+    }
+
+    setError("");
     setContent("");
+    await loadMessages(); // 서버에서 최신 목록 다시 가져오기
   }
 
   return (
@@ -47,6 +66,7 @@ export default function Home() {
           onChange={(e) => setContent(e.target.value)}
           required
         />
+        {error && <p className="error">{error}</p>}
         <button type="submit">저장</button>
       </form>
 
